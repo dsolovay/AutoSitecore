@@ -24,5 +24,17 @@ namespace AutoSitecoreUnitTest.Extensions
         .FailWith(@"Expected type {0} to be a Substitute of {1}{reason}, but it is not a subclass of it", typeAssertions.Subject, typeof (T));
 
     }
+
+    public static void NotBeSubstitute(this TypeAssertions typeAssertions, string because = "",
+      params object[] becauseArgs)
+    {
+      string typeName = typeAssertions.Subject.ToString();
+      Execute.Assertion
+        .ForCondition(!typeName.StartsWith("Castle.Proxies"))
+        .BecauseOf(because, becauseArgs)
+        .FailWith(@"Expected type {0} to not be Substitute{reason}, but its type name begins with ""Castle.Proxies""",
+          typeAssertions.Subject);
+    }
+
   }
 }

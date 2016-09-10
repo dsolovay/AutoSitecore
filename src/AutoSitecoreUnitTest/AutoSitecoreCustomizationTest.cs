@@ -130,6 +130,8 @@ namespace AutoSitecoreUnitTest
     {
       item.GetType().Should().Be<Item>(
         "this documents unexpected behavior of AutoFixture");
+      item.GetType().Should().NotBeSubstitute();
+
     }
 
     [Theory, AutoSitecore]
@@ -168,26 +170,26 @@ namespace AutoSitecoreUnitTest
       item.Name.Should().Be(innerName, "becaue they are set to match during Substitute construction");
     }
 
- 
-    [Fact]
-    public void ItemIdsAreSame()
+
+    [Theory, AutoSitecore]
+    public void ItemIdsAreSame(Item item)
     {
-      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
-      var item = fixture.Create<Item>();
       item.ID.Should().Be(item.InnerData.Definition.ID);
     }
 
     [Theory, AutoSitecore]
-    public void CanSetPath(Item item)
+    public void CanSetPath(Item item, string path)
     {
-      item.Paths.FullPath.Returns("/sitecore/content/home");
+      item.Paths.FullPath.Returns(path);
+
+      item.Paths.FullPath.Should().Be(path);
     }
 
     [Theory, AutoSitecore]
     public void CanCreateManyItems(IEnumerable<Item> items)
     {
       items.Count().Should().Be(3, "this is AutoFixture standard behavior");
-      items.First().GetType().ToString().Should().Be("Castle.Proxies.ItemProxy");
+      items.ToList().ForEach(i => i.GetType().Should().BeSubstituteOf<Item>());
       items.First().ID.Should().NotBe(items.Last().ID);
     }
   }
