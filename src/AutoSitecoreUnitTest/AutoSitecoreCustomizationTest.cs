@@ -7,10 +7,12 @@ using AutoSitecore;
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Xunit2;
 using Sitecore;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Globalization;
+using Sitecore.Pipelines.HttpRequest;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -76,14 +78,85 @@ namespace AutoSitecoreUnitTest
       item.GetType().FullName.Should().Be("Castle.Proxies.ItemProxy");
     }
 
+    [Theory, AutoSitecore]
+    public void ItemDefintionHasName(ItemDefinition definition)
+    {
+      definition.Name.Should().NotBeEmpty();
+    }
+
+    [Theory, AutoSitecore]
+    public void ItemDataHasName(ItemData data)
+    {
+      data.Definition.Name.Should().NotBeEmpty();
+    }
+
+    [Theory, AutoSitecore]
+    public void OmitAutoPropertiesMakesRealItem([NoAutoProperties] Item item)
+    {
+      item.GetType().ToString().Should().Be("Sitecore.Data.Items.Item",
+        "because I'm not sure why but wanted to document this.");
+    }
+
+    [Theory, AutoSitecore]
+    public void FixtureCanCreateItem(IFixture fixture, string itemName)
+    {
+      fixture.OmitAutoProperties = true;
+      Item item = fixture.Create<Item>();
+      item.Name.Returns(itemName);
+      item.Key.Should().Be(itemName.ToLower()); 
+    }
+    
+
+
+    [Theory, AutoSitecore]
+    public void ItemKeyMatchesItemNameToLower(Item item)
+    {
+
+      item.Name.Should().NotBeEmpty();
+      
+      item.Key.Should().Be(item.Name.ToLower());
+       
+    }
+
+    /// <summary>
+    /// When Item is injected as a parameter, the Key is accessed during the process (I have not yet
+    /// identified why or where), and this causes it to get tied to the generated itemName.  However,
+    /// if an item is generated directly from a fixture, and OmitAutoProperties is set to true, then
+    /// a new name can be assigned, and the key will match it.
+    /// </summary> 
+    [Theory, AutoSitecore]
+    public void ItemNameCanBeSetIfCreatedFromFixture(IFixture fixture, string itemName)
+    {
+      fixture.OmitAutoProperties = true;
+
+      Item item = fixture.Create<Item>();
+
+      item.Name.Returns(itemName);
+
+      item.Key.Should().Be(itemName.ToLower());
+
+
+    }
+
+    [Theory, AutoSitecore]
+    public void ItemNameMatchesInnerDataDefintionName(Item item)
+    {
+      string innerName = item.InnerData.Definition.Name;
+      item.Name.Should().Be(innerName, "becaue they are set to match during Substitute construction");
+    }
+
+
+    /// <summary>
+    /// Item.Key is not virtual in Sitecore 8.2, so this requires injection into the ItemDefinition constructor.
+    /// </summary>
     [Fact]
-    public void KeyIsEmpty()
+    public void KeyIsNotEmpty()
     {
       IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
 
       var item = fixture.Create<Item>();
 
-      item.Key.Should().BeEmpty();
+      item.Key.Should().NotBeEmpty();
     }
 
     [Fact]
