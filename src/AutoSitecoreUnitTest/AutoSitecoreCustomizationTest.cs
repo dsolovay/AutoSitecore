@@ -191,12 +191,4 @@ namespace AutoSitecoreUnitTest
       items.First().ID.Should().NotBe(items.Last().ID);
     }
   }
-
-   
-  namespace Silly
-  {
-    public class Item
-    {
-    }
-  }
 }
