@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Ploeh.AutoFixture.Kernel;
 
-namespace AutoSitecore
+namespace AutoSitecore.Builders
 {
   internal class ItemNameBuilder : ISpecimenBuilder
   {

@@ -1,7 +1,6 @@
-using System.Reflection;
+using AutoSitecore.Builders;
 using NSubstitute;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 
@@ -34,33 +33,6 @@ namespace AutoSitecore
           .Create());
 
       return item;
-    }
-  }
-
-  internal class TemplateIdBuilder : ISpecimenBuilder
-  {
-    private readonly ID _templateId;
-
-    public TemplateIdBuilder(ID templateId)
-    {
-      _templateId = templateId;
-    }
-
-    public object Create(object request, ISpecimenContext context)
-    {
-      var info = request as ParameterInfo;
-
-      if (info == null || info.ParameterType != typeof (ID) || info.Name != "templateID")
-      {
-        return new NoSpecimen();
-      }
-
-      if (_templateId == ID.Undefined)
-      {
-        return new ID();
-      }
-
-      return _templateId;
     }
   }
 }
