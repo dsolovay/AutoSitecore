@@ -1,16 +1,29 @@
 ﻿using System;
+using Sitecore.Data;
 
 namespace AutoSitecore
 {
   [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
   public class ItemDataAttribute : Attribute
   {
-    private readonly string _name;
- 
+    public static readonly ItemDataAttribute Null = new ItemDataAttribute();
 
-    public ItemDataAttribute(string name=null)
+    public ItemDataAttribute(string name=null, string templateId= null)
     {
-      this._name = name;
+      this.Name = name;
+      ID result;
+      if (ID.TryParse(templateId, out result))
+      {
+        TemplateId = result;
+      }
+      else
+      {
+        TemplateId = ID.Null;
+      }
+      
     }
+
+    public string Name { get; }
+    public ID TemplateId { get; }
   }
 }

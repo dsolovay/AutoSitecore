@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using System.Runtime.CompilerServices;
+using NSubstitute;
 using Ploeh.AutoFixture;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -9,25 +10,12 @@ namespace AutoSitecore
   {
     public void Customize(IFixture fixture)
     {
+      fixture.Customizations.Insert(0, new ItemDataCustomization(fixture));
+
       fixture.Inject(Substitute.For<Database>());
 
-      fixture.Register<Item>(() =>
-      {
-        ItemData data = fixture.Create<ItemData>();
-        Database db = fixture.Create<Database>();
-        var item = Substitute.For<Item>(data.Definition.ID, data, db);
-
-        item.Name.Returns(item.InnerData.Definition.Name);
-
-        item.Paths.Returns(
-          fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item))
-          .Create());
-
-        return  item;
-      });
+      fixture.Register<Item>(() => new AutoSitecoreFactory(fixture).MakeItem(ItemDataAttribute.Null));
       
     }
   }
-
- 
 }

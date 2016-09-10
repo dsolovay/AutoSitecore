@@ -23,9 +23,9 @@ namespace AutoSitecoreUnitTest
     }
 
     [Theory, AutoSitecore]
-    public void CanSetTemplateId([ItemData(templateId:new ID("543E0C95-305E-4FAD-AA5B-EDD46F613595"))] Item item)
+    public void CanSetTemplateId([ItemData(templateId:"543E0C95-305E-4FAD-AA5B-EDD46F613595")] Item item)
     {
-      item1.TemplateID.Should().Be(new ID("543E0C95-305E-4FAD-AA5B-EDD46F613595")); 
+      item.TemplateID.Should().Be(new ID("543E0C95-305E-4FAD-AA5B-EDD46F613595")); 
     }
   }
 }

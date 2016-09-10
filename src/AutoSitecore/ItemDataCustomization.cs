@@ -5,7 +5,7 @@ using Ploeh.AutoFixture.Kernel;
 
 namespace AutoSitecore
 {
-  public class ItemDataCustomization : ISpecimenBuilder
+  internal class ItemDataCustomization : ISpecimenBuilder
   {
     private readonly IFixture _fixture;
 

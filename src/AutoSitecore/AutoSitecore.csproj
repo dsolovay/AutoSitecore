@@ -51,6 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoSitecoreCustomization.cs" />
+    <Compile Include="AutoSitecoreFactory.cs" />
+    <Compile Include="ItemDataAttribute.cs" />
+    <Compile Include="ItemDataCustomization.cs" />
+    <Compile Include="ItemNameBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
