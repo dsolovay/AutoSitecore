@@ -11,16 +11,23 @@ namespace AutoSitecore
     {
       fixture.Inject(Substitute.For<Database>());
 
-
       fixture.Register<Item>(() =>
       {
         ItemData data = fixture.Create<ItemData>();
-         
         Database db = fixture.Create<Database>();
         var item = Substitute.For<Item>(data.Definition.ID, data, db);
-        item.Paths.Returns(fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item)).Create());
+
+        item.Name.Returns(item.InnerData.Definition.Name);
+
+        item.Paths.Returns(
+          fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item))
+          .Create());
+
         return  item;
       });
+      
     }
   }
+
+ 
 }

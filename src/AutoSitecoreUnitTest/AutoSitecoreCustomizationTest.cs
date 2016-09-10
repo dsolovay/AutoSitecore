@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoSitecore;
+using AutoSitecoreUnitTest.Extensions;
 using FluentAssertions;
 using NSubstitute;
 using Ploeh.AutoFixture;
@@ -15,6 +16,7 @@ using Sitecore.Globalization;
 using Sitecore.Pipelines.HttpRequest;
 using Xunit;
 using Xunit.Abstractions;
+using Version = Sitecore.Data.Version;
 
 namespace AutoSitecoreUnitTest
 {
@@ -27,8 +29,9 @@ namespace AutoSitecoreUnitTest
       ICustomization sut = new AutoSitecoreCustomization();
 
       fixture.Customize(sut);
-
     }
+
+    #region Item constructor element tests
 
     [Fact]
     public void CreatesAnonymousIds()
@@ -48,15 +51,30 @@ namespace AutoSitecoreUnitTest
 
       var definition = fixture.Create<ItemDefinition>();
 
+      definition.Should().NotBeNull();
+      definition.ID.Should().NotBe(ID.Null);
     }
 
+    /// <summary>
+    /// Documents default values created by AutoFixture. It should be possible to change these using 
+    /// SpecimenBuilder customizations.
+    /// </summary>
     [Fact]
     public void CreatesItemData()
     {
       IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
 
       var data = fixture.Create<ItemData>();
+
+      data.Should().NotBeNull();
+      data.Language.Should().Be(Language.Invariant);
+      data.Version.Should().Be(Version.Parse(0));
     }
+
+    #endregion
+
+
+    #region Database tests
 
     [Fact]
     public void CreatesSubstituteDatabase()
@@ -64,7 +82,26 @@ namespace AutoSitecoreUnitTest
       IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
 
       var db = fixture.Create<Database>();
+
+      db.Should().NotBeNull();
+      db.GetType().Should().BeSubstituteOf<Database>();
     }
+
+    [Fact]
+    public void AlwaysReturnsSameDatabase()
+    {
+      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
+
+      var db1 = fixture.Create<Database>();
+      var db2 = fixture.Create<Database>();
+      var item = fixture.Create<Item>();
+
+      db1.Should().BeSameAs(db2);
+      db1.Should().BeSameAs(item.Database);
+    }
+
+    #endregion
+
 
     [Fact]
     public void CreatesItemAsSubstitute()
@@ -73,9 +110,7 @@ namespace AutoSitecoreUnitTest
 
       var item = fixture.Create<Item>();
 
-      item.GetType().Should().NotBe<Item>();
-      item.GetType().Should().BeDerivedFrom<Item>();
-      item.GetType().FullName.Should().Be("Castle.Proxies.ItemProxy");
+      item.GetType().Should().BeSubstituteOf<Item>();
     }
 
     [Theory, AutoSitecore]
@@ -91,31 +126,24 @@ namespace AutoSitecoreUnitTest
     }
 
     [Theory, AutoSitecore]
-    public void OmitAutoPropertiesMakesRealItem([NoAutoProperties] Item item)
+    public void NoAutoPropertiesMakesRealItem([NoAutoProperties] Item item)
     {
-      item.GetType().ToString().Should().Be("Sitecore.Data.Items.Item",
-        "because I'm not sure why but wanted to document this.");
+      item.GetType().Should().Be<Item>(
+        "this documents unexpected behavior of AutoFixture");
     }
 
     [Theory, AutoSitecore]
     public void FixtureCanCreateItem(IFixture fixture, string itemName)
-    {
-      fixture.OmitAutoProperties = true;
+    { 
       Item item = fixture.Create<Item>();
-      item.Name.Returns(itemName);
-      item.Key.Should().Be(itemName.ToLower()); 
+      item.GetType().Should().BeSubstituteOf<Item>();
     }
-    
-
 
     [Theory, AutoSitecore]
     public void ItemKeyMatchesItemNameToLower(Item item)
     {
-
       item.Name.Should().NotBeEmpty();
-      
       item.Key.Should().Be(item.Name.ToLower());
-       
     }
 
     /// <summary>
@@ -128,14 +156,9 @@ namespace AutoSitecoreUnitTest
     public void ItemNameCanBeSetIfCreatedFromFixture(IFixture fixture, string itemName)
     {
       fixture.OmitAutoProperties = true;
-
       Item item = fixture.Create<Item>();
-
       item.Name.Returns(itemName);
-
       item.Key.Should().Be(itemName.ToLower());
-
-
     }
 
     [Theory, AutoSitecore]
@@ -145,27 +168,12 @@ namespace AutoSitecoreUnitTest
       item.Name.Should().Be(innerName, "becaue they are set to match during Substitute construction");
     }
 
-
-    /// <summary>
-    /// Item.Key is not virtual in Sitecore 8.2, so this requires injection into the ItemDefinition constructor.
-    /// </summary>
-    [Fact]
-    public void KeyIsNotEmpty()
-    {
-      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
-
-      var item = fixture.Create<Item>();
-
-      item.Key.Should().NotBeEmpty();
-    }
-
+ 
     [Fact]
     public void ItemIdsAreSame()
     {
       IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
-
       var item = fixture.Create<Item>();
-
       item.ID.Should().Be(item.InnerData.Definition.ID);
     }
 
@@ -181,6 +189,14 @@ namespace AutoSitecoreUnitTest
       items.Count().Should().Be(3, "this is AutoFixture standard behavior");
       items.First().GetType().ToString().Should().Be("Castle.Proxies.ItemProxy");
       items.First().ID.Should().NotBe(items.Last().ID);
+    }
+  }
+
+   
+  namespace Silly
+  {
+    public class Item
+    {
     }
   }
 }
