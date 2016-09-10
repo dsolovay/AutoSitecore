@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoSitecore;
 using FluentAssertions;
-using NSubstitute;
 using Ploeh.AutoFixture;
 using Sitecore;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Sitecore.Globalization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AutoSitecoreUnitTest
 {
@@ -62,34 +64,35 @@ namespace AutoSitecoreUnitTest
     }
 
     [Fact]
-    public void CreatesItem()
+    public void CreatesItemAsSubstitute()
     {
       IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
 
-      var item = fixture.Build<Item>().OmitAutoProperties().Create();
-      item.ID.Should().NotBe(ID.Null);
-      item.Name.Should().NotBeEmpty();
-      item.TemplateID.Should().NotBe(ID.Null);
-      item.BranchId.Should().NotBe(ID.Null);
-      item.Fields.Count.Should().Be(0);
+      var item = fixture.Create<Item>();
+
+      item.GetType().Should().NotBe<Item>();
+      item.GetType().Should().BeDerivedFrom<Item>();
+      item.GetType().FullName.Should().Be("Castle.Proxies.ItemProxy");
     }
-  }
 
-  public class AutoSitecoreCustomization: ICustomization
-  {
-    public void Customize(IFixture fixture)
+    [Fact]
+    public void KeyIsEmpty()
     {
-      fixture.Inject(Substitute.For<Database>());
-       
+      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
 
-      //fixture.Build<Item>().FromFactory(() =>
-      //{
-      //  ID itemID = fixture.Create<ID>();
-      //  ;
-      //  ItemData data = fixture.Create<ItemData>();
-      //  Database db = fixture.Create<Database>();
-      //  return Substitute.For<Item>(itemID, data, db);
-      //});
+      var item = fixture.Create<Item>();
+
+      item.Key.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ItemIdsAreSame()
+    {
+      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
+
+      var item = fixture.Create<Item>();
+
+      item.ID.Should().Be(item.InnerData.Definition.ID);
     }
   }
 }
