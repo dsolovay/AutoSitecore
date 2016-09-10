@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoSitecore;
 using FluentAssertions;
+using NSubstitute;
 using Ploeh.AutoFixture;
 using Sitecore;
 using Sitecore.Data;
@@ -93,6 +94,12 @@ namespace AutoSitecoreUnitTest
       var item = fixture.Create<Item>();
 
       item.ID.Should().Be(item.InnerData.Definition.ID);
+    }
+
+    [Theory, AutoSitecore]
+    public void CanSetPath(Item item)
+    {
+      item.Paths.FullPath.Returns("/sitecore/content/home");
     }
   }
 }

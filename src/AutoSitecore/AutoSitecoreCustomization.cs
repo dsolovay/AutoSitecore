@@ -17,7 +17,9 @@ namespace AutoSitecore
         ItemData data = fixture.Create<ItemData>();
          
         Database db = fixture.Create<Database>();
-        return  Substitute.For<Item>(data.Definition.ID, data, db);
+        var item = Substitute.For<Item>(data.Definition.ID, data, db);
+        item.Paths.Returns(fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item)).Create());
+        return  item;
       });
     }
   }
