@@ -101,5 +101,13 @@ namespace AutoSitecoreUnitTest
     {
       item.Paths.FullPath.Returns("/sitecore/content/home");
     }
+
+    [Theory, AutoSitecore]
+    public void CanCreateManyItems(IEnumerable<Item> items)
+    {
+      items.Count().Should().Be(3, "this is AutoFixture standard behavior");
+      items.First().GetType().ToString().Should().Be("Castle.Proxies.ItemProxy");
+      items.First().ID.Should().NotBe(items.Last().ID);
+    }
   }
 }
