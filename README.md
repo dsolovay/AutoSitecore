@@ -3,7 +3,7 @@ Autofixture customizations for Sitecore 8.2
 
 ## What is this?
 AutoSitecore is an extension to [AutoFixture](https://github.com/AutoFixture/AutoFixture) which allows injecting NSubstitute Items directly into 
-unit test parameters.  It leverages the testability features of Sitecore 8.2, streamlineing the creation of test items:
+unit test parameters.  It leverages the testability features of Sitecore 8.2, streamlining the creation of test items:
 
     [Theory, AutoSitecore]
     public void CreateTestItem(Item item)
@@ -15,26 +15,26 @@ unit test parameters.  It leverages the testability features of Sitecore 8.2, st
       
       // NSubstitute features for all virtual fields
       item.Name.Returns("some new name");
-      item.DidNotReceiveWithAnyArgs().Add("", new TemplateID);
+      item.DidNotReceiveWithAnyArgs().Add("", new TemplateID());
     }
     
 In addition, the `ItemData` attribute can be used to set properties on the item:
 
     [Theory, AutoSitecore]
-    public void CreateItemWithValues([ItemData(id:"{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}", 
-      templateId:"{76036F5E-CBCE-46D1-AF0A-4143F9B557AA}", name:"Home", fields:true] Item item)
+    public void CreateItemWithValues([ItemData(itemId:"{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}",
+      templateId:"{76036F5E-CBCE-46D1-AF0A-4143F9B557AA}", name:"Home", fields:true)] Item item)
     {
-       Assert.Equal(ID.Parse("{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}"), Item.ID);
-       Assert.Equal(ID.Parse("{76036F5E-CBCE-46D1-AF0A-4143F9B557AA}"), Item.TemplateID);
-       Assert.Equal("Home", item.Name);
-       Assert.Equal("home", item.Key);
-       Assert.Equal(3, item.Fields.Count(), "follows AutoFixture standard of creating three items");
-       
-       // fields can be accessed on item or Fields collection
-       ID id = item.InnerData.Fields.GetFieldIds.First();
-       string value = item.InnerData.Fields[id];
-       Assert.Equal(value, item[id]);
-       Assert.Equal(value, item.Fields[id].Value);
+      Assert.Equal(ID.Parse("{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}"), item.ID);
+      Assert.Equal(ID.Parse("{76036F5E-CBCE-46D1-AF0A-4143F9B557AA}"), item.TemplateID);
+      Assert.Equal("Home", item.Name);
+      Assert.Equal("home", item.Key);
+      Assert.Equal(3, item.Fields.Count()); // Follows AutoFixture standard of creating three items.
+
+      // fields can be accessed on item or Fields collection
+      ID id = item.InnerData.Fields.GetFieldIDs().First();
+      string value = item.InnerData.Fields[id];
+      Assert.Equal(value, item[id]);
+      Assert.Equal(value, item.Fields[id].Value);
     }
     
 Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` class, and within each test, this is a singleton, using AutoFixture's `Fixture.Inject` capability (See http://stackoverflow.com/a/18172472/402949).  So, you can get at the same substitute in several ways:
@@ -42,8 +42,10 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
     [Theory, AutoSitecore]
     public void DatabaseIsSame(Item item, Database db)
     {
-      Assert.ReferenceEqual(db, item.Database);
+      Assert.Same(db, item.Database);
     }
+
+(Note: These tests are included at (src/AutoSitecoreUnitTest/DocumentationTest.cs).)
     
 ## Sounds great, how do I get started?
 
