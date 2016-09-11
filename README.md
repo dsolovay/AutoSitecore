@@ -45,23 +45,21 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
       Assert.Same(db, item.Database);
     }
 
-(Note: These tests are included in [DocumentationTest.cs](src/AutoSitecoreUnitTest/DocumentationTest.cs).
+Note: These tests are included in [DocumentationTest.cs](src/AutoSitecoreUnitTest/DocumentationTest.cs).
     
 ## Sounds great, how do I get started?
 
   1. Create a C# class library.
   2. Install the following NuGet packages:
-     1. AutoFixture
-     2. XUnit
-     3. AutoFixture.Xunit2
-     4. Lucent.Net
-     5. Microsoft.Extensions.DependencyInjection
-     6. Microsoft.Extensions.DependencyInjection.Abstractions
-  5. Add reference to the following Sitecore DLLs and dependencies:
+     * AutoSitecore
+        * This loads a number of projects, notably Microsoft.Extensions.DependencyInjection. These are required by the Sitecore Item and Database classes to be instantiated.
+     * XUnit (or NUnit)
+     * AutoFixture.Xunit2 (or AutoFixture with NUnit)
+        * It is important to match the version number of XUnit or NUnit to the AutoFixture extension.  For example, NUNit 3.x requires AutoFixture.NUnit3, and XUnit 2.x requires AutoFixture.Xunit2.
+  3. Add reference to the following Sitecore DLLs:
       * Sitecore.Kernell.dll version 8.2 
       * Sitecore.Logging.dll version 8.2 
-  6. Build and reference AutoSitecore.csproj. (Temporary: it will be posted to NuGet shortly.)
-  7. Create an AutoSitecore attribute in your test project. Of course, you don't have to name it AutoSitecoreAttribute, but doing so will make it consistent with the examples.  
+  4. Create an AutoSitecore attribute in your test project. Of course, you don't have to name it AutoSitecoreAttribute, but doing so will make it consistent with the examples.  
   
      ```
      public class AutoSitecoreAttribute : AutoDataAttriubte
@@ -81,6 +79,5 @@ Absolutely, that is one of the core strengths of AutoFixture.  Some suggestions:
 
 ## What's next?
 
-   1. Get this on NuGet and Marketplace.
-   2. Add abilty to use ItemDataAttribute functionality when creating items within test body (as opposed to method parameters).
-    
+   1. Add abilty to use ItemDataAttribute functionality when creating items within test body (as opposed to method parameters).
+   2. Suggesgtions, via Issue tracker, are welcome.
