@@ -45,7 +45,7 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
       Assert.Same(db, item.Database);
     }
 
-(Note: These tests are included at (src/AutoSitecoreUnitTest/DocumentationTest.cs).)
+(Note: These tests are included in [DocumentationTest.cs](src/AutoSitecoreUnitTest/DocumentationTest.cs).
     
 ## Sounds great, how do I get started?
 
@@ -53,7 +53,10 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
   2. `install-package autofixture`
   3. `install-package xunit` (or NUnit if you prefer)
   4. `install-package autofixture.xunit2` (or NUnit equivalent)
-  5. Add reference to Sitecore.Kernell.dll version 8.2 (10.0.0.0)
+  5. Add reference to the following Sitecore DLLs and dependencies:
+      * Sitecore.Kernell.dll version 8.2 (10.0.0.0)
+      * Sitecore.Logging.dll version 8.2
+      * Lucene.Net.dll (version 3.0.3)
   6. Build and reference this project (Temporary: it will be posted to NuGet shortly.)
   7. Create an AutoSitecore attribute:  
   
@@ -63,7 +66,7 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
        Fixture.Customize(new AutoSitecoreCustomization());
      }
      ```
-     See (src/AutoSitecoreUnitTest/AutoSitecoreAttribute.cs). This is not included in the main project so as to avoid taking on a dependency on the XUnit for NUnit attribute projects, so that users can select their preference.
+     See [AutoSitecoreAttribute.cs](src/AutoSitecoreUnitTest/AutoSitecoreAttribute.cs) in the AutoSitecoreUnitTest project. This is not included in the main project so as to avoid taking on a dependency on the XUnit for NUnit attribute projects, so that users can select their preference.
      
 ## Can I further customize this?
 
