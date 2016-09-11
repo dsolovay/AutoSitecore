@@ -21,6 +21,7 @@ namespace AutoSitecore
 
       _fixture.Customizations.Insert(0, new ItemNameBuilder(itemName));
       _fixture.Customizations.Insert(0, new TemplateIdBuilder(itemData.TemplateId));
+      _fixture.Customizations.Insert(0, new ItemIdBuilder(itemData.ItemId));
       ItemData data = _fixture.Create<ItemData>();
       Database db = _fixture.Create<Database>();
       var item = Substitute.For<Item>(data.Definition.ID, data, db);
