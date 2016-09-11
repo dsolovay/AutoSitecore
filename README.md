@@ -70,7 +70,7 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
      
 ## Can I further customize this?
 
-Absolutely, that is one of the coure strengths of AutoFixture.  Some suggestions:
+Absolutely, that is one of the core strengths of AutoFixture.  Some suggestions:
 
   1. Create a subclass of ItemDataAttribute called FolderItemAttribute that always creates folder items.
   2. Create a AutoFixture Customization to create Fields with certain values: e.g. "Title":"Welcome to Sitecore".
