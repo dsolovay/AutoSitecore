@@ -50,15 +50,18 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
 ## Sounds great, how do I get started?
 
   1. Create a C# class library.
-  2. `install-package autofixture`
-  3. `install-package xunit` (or NUnit if you prefer)
-  4. `install-package autofixture.xunit2` (or NUnit equivalent)
+  2. Install the following NuGet packages:
+     1. AutoFixture
+     2. XUnit
+     3. AutoFixture.Xunit2
+     4. Lucent.Net
+     5. Microsoft.Extensions.DependencyInjection
+     6. Microsoft.Extensions.DependencyInjection.Abstractions
   5. Add reference to the following Sitecore DLLs and dependencies:
-      * Sitecore.Kernell.dll version 8.2 (10.0.0.0)
-      * Sitecore.Logging.dll version 8.2
-      * Lucene.Net.dll (version 3.0.3)
-  6. Build and reference this project (Temporary: it will be posted to NuGet shortly.)
-  7. Create an AutoSitecore attribute:  
+      * Sitecore.Kernell.dll version 8.2 
+      * Sitecore.Logging.dll version 8.2 
+  6. Build and reference AutoSitecore.csproj. (Temporary: it will be posted to NuGet shortly.)
+  7. Create an AutoSitecore attribute in your test project. Of course, you don't have to name it AutoSitecoreAttribute, but doing so will make it consistent with the examples.  
   
      ```
      public class AutoSitecoreAttribute : AutoDataAttriubte
