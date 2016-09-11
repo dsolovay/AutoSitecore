@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AutoSitecoreCustomization.cs" />
     <Compile Include="AutoSitecoreFactory.cs" />
+    <Compile Include="Builders\ItemIdBuilder.cs" />
     <Compile Include="Builders\ItemNameBuilder.cs" />
     <Compile Include="Builders\TemplateIdBuilder.cs" />
     <Compile Include="ItemDataAttribute.cs" />

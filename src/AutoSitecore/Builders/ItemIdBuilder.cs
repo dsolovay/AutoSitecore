@@ -4,30 +4,30 @@ using Sitecore.Data;
 
 namespace AutoSitecore.Builders
 {
-  internal class TemplateIdBuilder : ISpecimenBuilder
+  internal class ItemIdBuilder : ISpecimenBuilder
   {
-    private readonly ID _templateId;
+    private readonly ID _itemId;
 
-    public TemplateIdBuilder(ID templateId)
+    public ItemIdBuilder(ID itemId)
     {
-      _templateId = templateId;
+      _itemId = itemId;
     }
 
     public object Create(object request, ISpecimenContext context)
     {
       var info = request as ParameterInfo;
 
-      if (info == null || info.ParameterType != typeof (ID) || info.Name != "templateID")
+      if (info == null || info.ParameterType != typeof (ID) || info.Name != "itemID")
       {
         return new NoSpecimen();
       }
 
-      if (_templateId == ID.Undefined)
+      if (_itemId == ID.Undefined)
       {
         return new ID();
       }
 
-      return _templateId;
+      return _itemId;
     }
   }
 }
