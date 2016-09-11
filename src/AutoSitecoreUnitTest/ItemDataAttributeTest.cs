@@ -1,9 +1,13 @@
+using System;
+using System.Linq;
 using AutoSitecore;
 using FluentAssertions;
+using NSubstitute.ExceptionExtensions;
 using Sitecore;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Xunit;
+using Xunit.Sdk;
 
 namespace AutoSitecoreUnitTest
 {
@@ -36,14 +40,49 @@ namespace AutoSitecoreUnitTest
     {
       item.TemplateID.Should().Be(TemplateIDs.Folder); 
     }
+     
 
     [Theory, AutoSitecore]
-    public void CanSetId([ItemData(id: ContentRootId)] Item item)
+    public void CanSetId([ItemData(itemId: ContentRootId)] Item item)
     {
       item.ID.Should().Be(ItemIDs.ContentRoot);
     }
 
+    [Theory, AutoSitecore]
+    public void CanLeaveFieldsEmpty([ItemData(fields: false)] Item item)
+    {
+      item.InnerData.Fields.Count.Should().Be(0);
+    }
+    [Theory, AutoSitecore]
+    public void CanCreateFields([ItemData(fields: true)] Item item)
+    {
+      FieldList innerFields = item.InnerData.Fields;
+      innerFields.Count.Should().Be(3, "non virtual inner collection");
+      item.Fields.Count.Should().Be(3, "virtual method value set by Factory");
 
+      foreach (var id in innerFields.GetFieldIDs())
+      {
+        string value = innerFields[id];
+        id.Should().NotBe(ID.Null, "field ID should be set");
+        value.Should().NotBeNullOrEmpty("anonymous field value should be set");
+        item[id].Should().Be(value, "item indexer set");
+        item.Fields[id].Value.Should().Be(value, "Fields indexer set"); 
+      }
+      var firstId = innerFields.GetFieldIDs().First();
+      var lastId = innerFields.GetFieldIDs().Last();
 
+      firstId.Should().NotBe(lastId, "IDs should differ");
+      innerFields[firstId].Should().NotBe(innerFields[lastId], "values should differ");
+    }
+    
+
+    [Theory(Skip="Cannot test Theory exceptions in xUnit"), AutoSitecore]
+    public void InvalidIdThrows([ItemData(itemId:"invalid value")]Item item)
+    {
+      // xUnit does not have an ExpectedExceptionAttribute, so no way to document
+      // that an invalid attribute throws.
+    }
   }
+
+  
 }
