@@ -8,29 +8,11 @@ namespace AutoSitecore
   {
     public static readonly ItemDataAttribute Null = new ItemDataAttribute();
 
-    public ItemDataAttribute(string name=null, string id = null, string templateId= null)
+    public ItemDataAttribute(string name=null, string itemId = null, string templateId= null)
     {
-      this.Name = name;
-      ID result;
-      if (ID.TryParse(templateId, out result))
-      {
-        TemplateId = result;
-      }
-      else
-      {
-        TemplateId = ID.Null;
-      }
-      ID result2;
-     
-      if (ID.TryParse(id, out result2))
-      {
-        ItemId = result2;
-      }
-      else
-      {
-        ItemId = ID.Undefined;
-      }
-
+      Name = name;
+      ItemId = ID.Parse(itemId, ID.Undefined);
+      TemplateId = ID.Parse(templateId, ID.Undefined);
     }
 
     public string Name { get; }
