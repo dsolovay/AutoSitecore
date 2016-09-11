@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Dan Solovay</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/dsolovay/AutoSitecore/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://github.com/dsolovay/AutoSitecore</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>AutoSitecore is a customization of AutoFixture for creating NSubstitute Sitecore Items.</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>Testing Sitecore AutoFixture NSubstitute</tags>
+  </metadata>
+</package>

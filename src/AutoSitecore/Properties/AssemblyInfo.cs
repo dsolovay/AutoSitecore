@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AutoSitecore")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("AutoSitecore is a customization of AutoFixture for creating NSubstitute Sitecore Items.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Dan Solovay")]
 [assembly: AssemblyProduct("AutoSitecore")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
