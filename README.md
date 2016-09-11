@@ -48,9 +48,9 @@ Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` cla
 ## Sounds great, how do I get started?
 
   1. Create a C# class library.
-  2. `insert-package autofixture`
-  3. `insert-package xunit` (or NUnit if you prefer)
-  4. `insert-package autofixture.xunit2` (or NUnit equivalent)
+  2. `install-package autofixture`
+  3. `install-package xunit` (or NUnit if you prefer)
+  4. `install-package autofixture.xunit2` (or NUnit equivalent)
   5. Add reference to Sitecore.Kernell.dll version 8.2 (10.0.0.0)
   6. Build and reference this project (Temporary: it will be posted to NuGet shortly.)
   7. Create an AutoSitecore attribute:  
