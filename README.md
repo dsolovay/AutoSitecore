@@ -41,7 +41,7 @@ public void CreateItemWithValues([ItemData(itemId:"{110D559F-DEA5-42EA-9C1C-8A5D
 }
 ```
     
-Finally, AutoSitecore creaetes a Substitute for the `Sitecore.Data.Database` class, and within each test, this is a singleton, using AutoFixture's `Fixture.Inject` capability (See http://stackoverflow.com/a/18172472/402949).  So, you can get at the same substitute in several ways:
+Finally, AutoSitecore creates a Substitute for the `Sitecore.Data.Database` class, and within each test, this is a singleton, using AutoFixture's `Fixture.Inject` capability (See http://stackoverflow.com/a/18172472/402949).  So, you can get at the same substitute in several ways:
   
 ```csharp
 [Theory, AutoSitecore]
@@ -81,9 +81,9 @@ Absolutely, that is one of the core strengths of AutoFixture.  Some suggestions:
 
   1. Create a subclass of ItemDataAttribute called FolderItemAttribute that always creates folder items.
   2. Create a AutoFixture Customization to create Fields with certain values: e.g. "Title":"Welcome to Sitecore".
-  3. Add the NSubstituteCustomization to your AutoSitecoreAttribute to allow creating substitutes of interfaces, or classes that depend on interfaces. (I considred adding this to the default implemenation, but decided it made more sense to leave this up to users.)
+  3. Add the NSubstituteCustomization to your AutoSitecoreAttribute to allow creating substitutes of interfaces, or classes that depend on interfaces. (I considered adding this to the default implementation, but decided it made more sense to leave this up to users.)
 
 ## What's next?
 
-   1. Add abilty to use ItemDataAttribute functionality when creating items within test body (as opposed to method parameters).
-   2. Suggesgtions, via Issue tracker, are welcome.
+   1. Add ability to use ItemDataAttribute functionality when creating items within test body (as opposed to method parameters).
+   2. Suggestions, via Issue tracker, are welcome.
