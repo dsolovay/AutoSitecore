@@ -70,7 +70,10 @@ Note: These tests are included in [DocumentationTest.cs](src/AutoSitecoreUnitTes
     ```csharp
     public class AutoSitecoreAttribute : AutoDataAttriubte
     {
-      Fixture.Customize(new AutoSitecoreCustomization());
+      public AutoSitecoreAttribute()
+      {
+        Fixture.Customize(new AutoSitecoreCustomization());
+      }
     }
     ```
      See [AutoSitecoreAttribute.cs](src/AutoSitecoreUnitTest/AutoSitecoreAttribute.cs) in the AutoSitecoreUnitTest project. This is not included in the main project so as to avoid taking on a dependency on the XUnit for NUnit attribute projects, so that users can select their preference.
