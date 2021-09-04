@@ -76,11 +76,10 @@ namespace AutoSitecoreUnitTest
     }
     
 
-    [Theory(Skip="Cannot test Theory exceptions in xUnit"), AutoSitecore]
-    public void InvalidIdThrows([ItemData(itemId:"invalid value")]Item item)
-    {
-      // xUnit does not have an ExpectedExceptionAttribute, so no way to document
-      // that an invalid attribute throws.
+    [Fact()]
+    public void InvalidIdThrows()
+    { 
+      Assert.Throws<ArgumentException>(() =>  new ItemDataAttribute(itemId: "invalid value"));
     }
   }
 
