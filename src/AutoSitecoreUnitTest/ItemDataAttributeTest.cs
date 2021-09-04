@@ -1,11 +1,15 @@
 using System;
 using System.Linq;
 using AutoSitecore;
+using AutoSitecoreUnitTest.Extensions;
 using FluentAssertions;
 using NSubstitute.ExceptionExtensions;
+using Ploeh.AutoFixture;
 using Sitecore;
 using Sitecore.Data;
+using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
+using NSubstitute;
 using Xunit;
 using Xunit.Sdk;
 
@@ -73,13 +77,51 @@ namespace AutoSitecoreUnitTest
 
       firstId.Should().NotBe(lastId, "IDs should differ");
       innerFields[firstId].Should().NotBe(innerFields[lastId], "values should differ");
+
+      item.Fields[firstId].Should().BeSameAs(item.Fields[0]);
+
+      item.Fields[lastId].Should().BeSameAs(item.Fields[item.Fields.Count - 1]);
+      item.Fields[firstId].Should().NotBeSameAs(item.Fields[lastId]);
     }
-    
+
+    [Fact]
+    public void CanCreateSpecificFields()
+    {
+      IFixture fixture = new Fixture().Customize(new AutoSitecoreCustomization());
+      Item item = fixture.Create<Item>();
+      item["Title"].Returns("Welcome to Sitecore");
+      item["Title"].Should().Be("Welcome to Sitecore");
+      item.Fields["Title"].Should().BeNull(because: "Must be set separately.");
+
+      item.Fields["Title"].Returns(Substitute.For<Field>(ID.Null, item));
+      item.Fields["Title"].Value.Returns("Second value");
+      item.Fields["Title"].Value.Should().Be("Second value");
+
+    }
 
     [Fact()]
     public void InvalidIdThrows()
     { 
       Assert.Throws<ArgumentException>(() =>  new ItemDataAttribute(itemId: "invalid value"));
+    }
+
+    [Theory, AutoSitecore]
+    public void CanAccessFieldsByIndexer([ItemData(fields: true)] Item item)
+    {
+      item.Fields[0].GetType().Should().BeSubstituteOf<Sitecore.Data.Fields.Field>();
+      item.Fields[1].GetType().Should().BeSubstituteOf<Sitecore.Data.Fields.Field>();
+      item.Fields[0].Should().NotBeSameAs(item.Fields[1]);
+    }
+
+    [Theory, AutoSitecore]
+    public void CanSetUsingIndexer([ItemData(fields: true)] Item item, string someValue, string someFieldName)
+    {
+      
+      item.Fields[0].Value.Returns(someValue);
+      Field substituteField = item.Fields[0];
+      item.Fields[someFieldName].Returns(substituteField);
+
+      item.Fields[someFieldName].Value.Should().Be(someValue);
     }
   }
 

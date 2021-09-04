@@ -33,6 +33,7 @@ namespace AutoSitecore
       {
         _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture));
       }
+      
       ItemData data = _fixture.Create<ItemData>();
       Database db = _fixture.Create<Database>();
       var item = Substitute.For<Item>(data.Definition.ID, data, db);
@@ -54,6 +55,7 @@ namespace AutoSitecore
       var fields = item.InnerData.Fields;
       item.Fields.Returns(Substitute.For<FieldCollection>(item));
       item.Fields.Count.Returns(fields.Count);
+      int i = 0;
       foreach (var id in fields.GetFieldIDs())
       {
         string value = fields[id];
@@ -61,6 +63,7 @@ namespace AutoSitecore
         var field = Substitute.For<Field>(id, item);
         field.Value.Returns(value);
         item.Fields[id].Returns(field);
+        item.Fields[i++].Returns(field);
       }
     }
   }

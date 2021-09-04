@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ using Ploeh.AutoFixture.Xunit2;
 using Sitecore;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Sitecore.Data.Fields;
 using Sitecore.Globalization;
 using Sitecore.Pipelines.HttpRequest;
 using Xunit;
@@ -193,5 +194,8 @@ namespace AutoSitecoreUnitTest
       items.First().ID.Should().NotBe(items.Last().ID);
       items.First().TemplateID.Should().NotBe(items.Last().TemplateID);
     }
+
+
+
   }
 }
