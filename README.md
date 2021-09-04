@@ -67,15 +67,15 @@ Note: These tests are included in [DocumentationTest.cs](src/AutoSitecoreUnitTes
       * Sitecore.Logging.dll version 8.2 
   4. Create an AutoSitecore attribute in your test project. Of course, you don't have to name it AutoSitecoreAttribute, but doing so will make it consistent with the examples.  
   
-    ```csharp
-    public class AutoSitecoreAttribute : AutoDataAttriubte
-    {
-      public AutoSitecoreAttribute()
+     ```csharp
+      public class AutoSitecoreAttribute : AutoDataAttriubte
       {
-        Fixture.Customize(new AutoSitecoreCustomization());
+        public AutoSitecoreAttribute()
+        {
+          Fixture.Customize(new AutoSitecoreCustomization());
+        }
       }
-    }
-    ```
+     ```  
      See [AutoSitecoreAttribute.cs](src/AutoSitecoreUnitTest/AutoSitecoreAttribute.cs) in the AutoSitecoreUnitTest project. This is not included in the main project so as to avoid taking on a dependency on the XUnit for NUnit attribute projects, so that users can select their preference.
      
 ## Can I further customize this?
