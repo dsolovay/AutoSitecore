@@ -24,12 +24,22 @@ namespace AutoSitecore
       item.Name.Returns(item.InnerData.Definition.Name);
       item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
 
+      item.Name.Returns(item.InnerData.Definition.Name);
+      item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
+      item.Paths.Returns(Substitute.For<ItemPath>(item));
+      
+
+
+
+      
+
       return item;
 
       //TODO migrate field creation logic
 
 
     }
+
   }
 
 

@@ -54,14 +54,7 @@ namespace AutoSitecore
 
       var item = _fixture.Create<Item>();
 
-      item.Name.Returns(item.InnerData.Definition.Name);
-      item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
-
       SetItemFields(item, fields);
-
-      item.Paths.Returns(
-        _fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item))
-          .Create());
 
       return item;
     }
