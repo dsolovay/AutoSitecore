@@ -10,14 +10,10 @@ namespace AutoSitecore
   {
     public void Customize(IFixture fixture)
     {
-      //fixture.Customizations.Insert(0, new ItemDataCustomization(fixture));
-
+    
       fixture.Inject(Substitute.For<Database>());
 
       fixture.Customizations.Insert(0, new ItemBuilder(fixture));
-      
-
-     // fixture.Register<Item>(() => new AutoSitecoreFactory(fixture).MakeItem(ItemDataAttribute.Null));
       
     }
   }
