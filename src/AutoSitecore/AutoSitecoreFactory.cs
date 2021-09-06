@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using AutoSitecore.Builders;
 using NSubstitute;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
 using Sitecore.Collections;
 using Sitecore.Data;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
+using System.Collections.Generic;
 
 namespace AutoSitecore
 {
@@ -23,15 +20,25 @@ namespace AutoSitecore
 
     public Item MakeItem(ItemDataAttribute itemData)
     {
+      return MakeItem(itemData, new List<System.Attribute>());
+    }
+      public Item MakeItem(ItemDataAttribute itemData, List<System.Attribute> fields)
+    {
+
+      if (itemData == null)
+      {
+        itemData = ItemDataAttribute.Null;
+      }
+ 
       string itemName = itemData.Name ?? _fixture.Create<string>("itemName");
 
       _fixture.Customizations.Insert(0, new ItemNameBuilder(itemName));
       _fixture.Customizations.Insert(0, new TemplateIdBuilder(itemData.TemplateId));
       _fixture.Customizations.Insert(0, new ItemIdBuilder(itemData.ItemId));
 
-      if (itemData.HasFields)
+      if (itemData.HasFields || fields.Count > 0)
       {
-        _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture));
+        _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture, itemData.HasFields, fields));
       }
       
       ItemData data = _fixture.Create<ItemData>();
@@ -41,7 +48,7 @@ namespace AutoSitecore
       item.Name.Returns(item.InnerData.Definition.Name);
       item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
 
-      SetItemFields(item);
+      SetItemFields(item, fields);
 
       item.Paths.Returns(
         _fixture.Build<ItemPath>().FromFactory(() => Substitute.For<ItemPath>(item))
@@ -50,52 +57,40 @@ namespace AutoSitecore
       return item;
     }
 
-    private void SetItemFields(Item item)
+    private void SetItemFields(Item item, List<System.Attribute> attributeFields)
     {
-      var fields = item.InnerData.Fields;
+      var innerFields = item.InnerData.Fields;
       item.Fields.Returns(Substitute.For<FieldCollection>(item));
-      item.Fields.Count.Returns(fields.Count);
+      item.Fields.Count.Returns(innerFields.Count);
       int i = 0;
-      foreach (var id in fields.GetFieldIDs())
+      foreach (var id in innerFields.GetFieldIDs())
       {
-        string value = fields[id];
+        string value = innerFields[id];
         item[id].Returns(value);
         var field = Substitute.For<Field>(id, item);
         field.Value.Returns(value);
         item.Fields[id].Returns(field);
         item.Fields[i++].Returns(field);
       }
-    }
-  }
 
-  internal class ItemFieldBuilder : ISpecimenBuilder
-  {
-    private readonly IFixture _fixture;
-
-    public ItemFieldBuilder(IFixture fixture)
-    {
-      _fixture = fixture;
-    }
-
-    public object Create(object request, ISpecimenContext context)
-    {
-      var info = request as ParameterInfo;
-
-      if (info == null || info.ParameterType != typeof (FieldList) || info.Name != "fields")
+      foreach (var attr in attributeFields)
       {
-        return new NoSpecimen();
+        FieldDataAttribute fieldData = attr as FieldDataAttribute;
+        if (fieldData == null) { continue; }
+
+        ID id = fieldData.GeneratedID;
+        string name  = fieldData.Name;
+        string value = fieldData.Value;
+
+        if (string.IsNullOrEmpty(name)) { continue; }
+
+        string stringForId = item[id];
+        item[name].Returns(stringForId);
+        Field fieldForId = item.Fields[id];
+        item.Fields[name].Returns(fieldForId);
+        
       }
-
-      var list = new FieldList();
-      List<ID> ids = _fixture.CreateMany<ID>().ToList();
-      List<string> values  = _fixture.CreateMany<string>("value").ToList();
-      for (int i = 0; i < ids.Count; i++)
-      {
-        list.Add(ids[i], values[i]);
-      }
-      return list;
-
-
+      
     }
   }
 }

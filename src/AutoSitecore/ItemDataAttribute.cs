@@ -35,4 +35,5 @@ namespace AutoSitecore
     public ID TemplateId { get; }
     public ID ItemId { get; }
   }
+
 }

@@ -123,7 +123,16 @@ namespace AutoSitecoreUnitTest
 
       item.Fields[someFieldName].Value.Should().Be(someValue);
     }
+
+
+    [Theory, AutoSitecore]
+    public void CanSetFieldValue([FieldData(name: "Field 1", value: "Value 1")][FieldData(name: "Field 2", value: "Value 2")]Item item)
+    {
+
+      item.Fields["Field 1"].Value.Should().Be("Value 1");
+    }
+
   }
 
-  
+
 }

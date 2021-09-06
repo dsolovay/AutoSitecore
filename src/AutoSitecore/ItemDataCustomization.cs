@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Ploeh.AutoFixture;
@@ -25,12 +26,14 @@ namespace AutoSitecore
 
       ItemDataAttribute itemData = info.GetCustomAttributes(typeof (ItemDataAttribute)).FirstOrDefault() as ItemDataAttribute;
 
-      if (itemData == null)
+      List<System.Attribute> fields = info.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
+
+      if (itemData == null && fields.Count == 0)
       {
         return new NoSpecimen();
       }
       
-      return new AutoSitecoreFactory(_fixture).MakeItem(itemData);
+      return new AutoSitecoreFactory(_fixture).MakeItem(itemData, fields);
     }
   }
 }

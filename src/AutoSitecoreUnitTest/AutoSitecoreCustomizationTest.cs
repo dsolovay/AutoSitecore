@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -149,19 +149,14 @@ namespace AutoSitecoreUnitTest
       item.Key.Should().Be(item.Name.ToLower());
     }
 
-    /// <summary>
-    /// When Item is injected as a parameter, the Key is accessed during the process (I have not yet
-    /// identified why or where), and this causes it to get tied to the generated itemName.  However,
-    /// if an item is generated directly from a fixture, and OmitAutoProperties is set to true, then
-    /// a new name can be assigned, and the key will match it.
-    /// </summary> 
+
     [Theory, AutoSitecore]
-    public void ItemNameCanBeSetIfCreatedFromFixture(IFixture fixture, string itemName)
+    public void ItemNameCanBeSetIfCreatedFromFixture(IFixture fixture, string someName)
     {
-      fixture.OmitAutoProperties = true;
+      string upper = someName.ToUpper(), lower = someName.ToLower();
       Item item = fixture.Create<Item>();
-      item.Name.Returns(itemName);
-      item.Key.Should().Be(itemName.ToLower());
+      item.Name.Returns(upper);
+      item.Key.Should().Be(lower, "key is not virtual, and accesses set Name value");
     }
 
     [Theory, AutoSitecore]
@@ -195,7 +190,27 @@ namespace AutoSitecoreUnitTest
       items.First().TemplateID.Should().NotBe(items.Last().TemplateID);
     }
 
+    [Theory, AutoSitecore]
+    public void RecreatedIdReturnsExpectedField([ItemData(fields:true)]Item item)
+    {
+      ID someId = item.InnerData.Fields.GetFieldIDs().First();
+      string expected = item.InnerData.Fields.FieldValues[someId];
+      ID recreatdId = new ID(someId.Guid);
+      string guidValue = someId.Guid.ToString();
+      string reason;
 
+      reason = "we requested sample data with fields:true";
+      someId.Guid.Should().NotBeEmpty(reason);
+      expected.Should().NotBeNullOrEmpty(reason);
 
+      reason = "NSubstitute respects Equals implementations, and does not require reference identity";
+      item[recreatdId].Should().Be(expected, reason);
+      item.Fields[recreatdId].Value.Should().Be(expected, reason);
+
+      reason = "Guid.ToString() is not supported unless manually scripted";
+      item[guidValue].Should().BeEmpty(reason);
+      item[guidValue].Returns(expected);
+      item[guidValue].Should().Be(expected, reason);
+    }
   }
 }
