@@ -28,8 +28,6 @@ namespace AutoSitecore
       public Item MakeItem(ItemDataAttribute itemData, List<System.Attribute> fields)
     {
 
-    
-
       if (itemData == null)
       {
         itemData = ItemDataAttribute.Null;
@@ -46,7 +44,7 @@ namespace AutoSitecore
         _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture, itemData.HasFields, fields));
       }
 
-      _fixture.Customizations.Insert(0, new ItemBuilder());
+      _fixture.Customizations.Insert(0, new ItemBuilder(_fixture));
 
       //ItemData data = _fixture.Create<ItemData>();
       //Database db = _fixture.Create<Database>();

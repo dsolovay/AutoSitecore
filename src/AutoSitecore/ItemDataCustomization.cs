@@ -6,34 +6,34 @@ using Ploeh.AutoFixture.Kernel;
 
 namespace AutoSitecore
 {
-  internal class ItemDataCustomization : ISpecimenBuilder
-  {
-    private readonly IFixture _fixture;
+  //internal class ItemDataCustomization : ISpecimenBuilder
+  //{
+  //  private readonly IFixture _fixture;
 
-    public ItemDataCustomization(IFixture fixture)
-    {
-      _fixture = fixture;
-    }
+  //  public ItemDataCustomization(IFixture fixture)
+  //  {
+  //    _fixture = fixture;
+  //  }
 
-    public object Create(object request, ISpecimenContext context)
-    {
-      ParameterInfo info = request as ParameterInfo;
+  //  public object Create(object request, ISpecimenContext context)
+  //  {
+  //    ParameterInfo info = request as ParameterInfo;
 
-      if (info == null)
-      {
-        return new NoSpecimen();
-      }
+  //    if (info == null)
+  //    {
+  //      return new NoSpecimen();
+  //    }
 
-      ItemDataAttribute itemData = info.GetCustomAttributes(typeof (ItemDataAttribute)).FirstOrDefault() as ItemDataAttribute;
+  //    ItemDataAttribute itemData = info.GetCustomAttributes(typeof (ItemDataAttribute)).FirstOrDefault() as ItemDataAttribute;
 
-      List<System.Attribute> fields = info.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
+  //    List<System.Attribute> fields = info.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
 
-      if (itemData == null && fields.Count == 0)
-      {
-        return new NoSpecimen();
-      }
+  //    if (itemData == null && fields.Count == 0)
+  //    {
+  //      return new NoSpecimen();
+  //    }
       
-      return new AutoSitecoreFactory(_fixture).MakeItem(itemData, fields);
-    }
-  }
+  //    return new AutoSitecoreFactory(_fixture).MakeItem(itemData, fields);
+  //  }
+  //}
 }

@@ -34,7 +34,7 @@ namespace AutoSitecoreUnitTest
       Assert.Equal(ID.Parse("{110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9}"), item.ID);
       Assert.Equal(ID.Parse("{76036F5E-CBCE-46D1-AF0A-4143F9B557AA}"), item.TemplateID);
       Assert.Equal("Home", item.Name);
-      Assert.Equal("home", item.Key);
+      Assert.Equal("home", item.Key); 
       Assert.Equal(3, item.Fields.Count()); // Follows AutoFixture standard of creating three items.
 
       // fields can be accessed on item or Fields collection
