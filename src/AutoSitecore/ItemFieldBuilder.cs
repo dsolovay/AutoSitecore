@@ -45,20 +45,17 @@ namespace AutoSitecore
       {
         FieldDataAttribute fieldData = field as FieldDataAttribute;
         if (fieldData == null) { continue; }
-
-        fieldData.GeneratedID = _fixture.Create<ID>();
-        ids.Add(fieldData.GeneratedID);
+        ids.Add(fieldData.ID);
         string value = fieldData.Value ?? _fixture.Create("value");
         values.Add(value);
       }
-       
+
       for (int i = 0; i < ids.Count; i++)
       {
         list.Add(ids[i], values[i]);
       }
+
       return list;
-
-
     }
   }
 }

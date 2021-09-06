@@ -78,7 +78,7 @@ namespace AutoSitecore
         FieldDataAttribute fieldData = attr as FieldDataAttribute;
         if (fieldData == null) { continue; }
 
-        ID id = fieldData.GeneratedID;
+        ID id = fieldData.ID;
         string name  = fieldData.Name;
         string value = fieldData.Value;
 

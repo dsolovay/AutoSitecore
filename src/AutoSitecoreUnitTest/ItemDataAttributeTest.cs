@@ -132,6 +132,16 @@ namespace AutoSitecoreUnitTest
       item.Fields["Field 1"].Value.Should().Be("Value 1");
     }
 
+    [Theory, AutoSitecore]
+    public void CanSetFieldIds(
+      [FieldData(id:"11b1c214-e002-4616-86f1-a36ec008a3b4", value: "Value 1")]
+      [FieldData(id:"d1441cbc-1052-488a-ac07-486e0d3c64fb", value: "Value 2")]
+    Item item)
+    {
+      item.Fields[new ID("11b1c214-e002-4616-86f1-a36ec008a3b4")].Value.Should().Be("Value 1");
+      item.Fields[new ID("d1441cbc-1052-488a-ac07-486e0d3c64fb")].Value.Should().Be("Value 2");
+    }
+
   }
 
 
