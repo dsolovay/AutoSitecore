@@ -14,6 +14,9 @@ namespace AutoSitecore
 
       fixture.Inject(Substitute.For<Database>());
 
+      fixture.Customizations.Insert(0, new ItemBuilder());
+      
+
      // fixture.Register<Item>(() => new AutoSitecoreFactory(fixture).MakeItem(ItemDataAttribute.Null));
       
     }
