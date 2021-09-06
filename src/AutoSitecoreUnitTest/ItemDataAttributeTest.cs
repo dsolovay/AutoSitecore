@@ -12,6 +12,7 @@ using Sitecore.Data.Items;
 using NSubstitute;
 using Xunit;
 using Xunit.Sdk;
+using Ploeh.AutoFixture.Xunit2;
 
 namespace AutoSitecoreUnitTest
 {
@@ -20,6 +21,10 @@ namespace AutoSitecoreUnitTest
     private const string ContentRootId = "{0DE95AE4-41AB-4D01-9EB0-67441B7C2450}";
 
     private const string TemplateIdAsString = "{A87A00B1-E6DB-45AB-8B54-636FEC3B5523}";
+
+    public string Name { get; private set; }
+    public ID ID { get; private set; }
+    public string Value { get; private set; }
 
     [Theory, AutoSitecore]
     public void CanSetName([ItemData(name: "specifiedName")] Item item)
@@ -140,7 +145,39 @@ namespace AutoSitecoreUnitTest
     {
       item.Fields[new ID("11b1c214-e002-4616-86f1-a36ec008a3b4")].Value.Should().Be("Value 1");
       item.Fields[new ID("d1441cbc-1052-488a-ac07-486e0d3c64fb")].Value.Should().Be("Value 2");
+
     }
+
+    [Theory, AutoData]
+      public void IDsSet (ID id1, ID id2)
+    {
+      id1.Should().NotBe(id2);
+      id1.Should().NotBeNull();
+      id1.Should().NotBe(ID.Null);
+    }
+
+    [Theory(Skip = "Not yet implemented"), AutoSitecore]
+    public void CanSetFieldsWithoutUsingAttributes(IFixture fixture, ID itemId, string itemName, ID fieldId, string fieldName, string fieldValue)
+    {
+      var customization = new ItemCustomization() {
+        ID = itemId,
+        Name = itemName,
+        Fields = { {Name = fieldName, ID = fieldId, Value = fieldValue } }
+      };
+      fixture.Customize(customization);
+
+
+      //TODO Implement after refactoring to use Specimen Builder
+
+      //Item item = fixture.Create<Item>();
+
+      //item.Name.Should().Be(itemName);
+      //item.ID.Should().Be(itemId);
+      ////item.Fields[fieldName].Value.Should().Be(fieldValue);
+      //item.Fields[fieldId].Value.Should().Be(fieldValue);
+    }
+
+    // create tree
 
   }
 

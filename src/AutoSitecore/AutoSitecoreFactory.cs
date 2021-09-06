@@ -18,12 +18,17 @@ namespace AutoSitecore
       this._fixture = fixture;
     }
 
+   
+    // TODO Refactor to use specimen builder, so that customizations are accessible.
+
     public Item MakeItem(ItemDataAttribute itemData)
     {
       return MakeItem(itemData, new List<System.Attribute>());
     }
       public Item MakeItem(ItemDataAttribute itemData, List<System.Attribute> fields)
     {
+
+    
 
       if (itemData == null)
       {
@@ -40,10 +45,14 @@ namespace AutoSitecore
       {
         _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture, itemData.HasFields, fields));
       }
-      
-      ItemData data = _fixture.Create<ItemData>();
-      Database db = _fixture.Create<Database>();
-      var item = Substitute.For<Item>(data.Definition.ID, data, db);
+
+      _fixture.Customizations.Insert(0, new ItemBuilder());
+
+      //ItemData data = _fixture.Create<ItemData>();
+      //Database db = _fixture.Create<Database>();
+      //var item = Substitute.For<Item>(data.Definition.ID, data, db);
+
+      var item = _fixture.Create<Item>();
 
       item.Name.Returns(item.InnerData.Definition.Name);
       item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
@@ -93,4 +102,6 @@ namespace AutoSitecore
       
     }
   }
+
+
 }

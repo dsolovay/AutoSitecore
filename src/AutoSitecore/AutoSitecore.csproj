@@ -79,6 +79,7 @@
     <Compile Include="Builders\ItemNameBuilder.cs" />
     <Compile Include="Builders\TemplateIdBuilder.cs" />
     <Compile Include="FieldDataAttribute.cs" />
+    <Compile Include="ItemBuilder.cs" />
     <Compile Include="ItemDataAttribute.cs" />
     <Compile Include="ItemDataCustomization.cs" />
     <Compile Include="ItemFieldBuilder.cs" />

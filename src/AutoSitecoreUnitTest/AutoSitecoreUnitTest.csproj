@@ -106,6 +106,8 @@
     <Compile Include="AutoSitecoreCustomizationTest.cs" />
     <Compile Include="DocumentationTest.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="FieldRequest.cs" />
+    <Compile Include="ItemCustomization.cs" />
     <Compile Include="ItemDataAttributeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
