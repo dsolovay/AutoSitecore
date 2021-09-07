@@ -136,7 +136,6 @@ namespace AutoSitecoreUnitTest
       [FieldData(name: "Field 2", value: "Value 2")]
       Item item)
     {
-      item.Should().NotBeNull();
       item.Fields["Field 1"].Value.Should().Be("Value 1");
       item.Fields["Field 2"].Value.Should().Be("Value 2");
     }
