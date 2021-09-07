@@ -6,6 +6,7 @@ using Sitecore.Collections;
 using Sitecore.Data;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
+using Sitecore.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,17 +57,13 @@ namespace AutoSitecore.Builders
       item.Name.Returns(item.InnerData.Definition.Name);
       item.TemplateID.Returns(item.InnerData.Definition.TemplateID);
       item.Paths.Returns(Substitute.For<ItemPath>(item));
-
-
+      item.Access.Returns(Substitute.For<ItemAccess>(item));
+      item.Appearance.Returns(Substitute.For<ItemAppearance>(item));
+      //TODO Map remaining properties to substitutes.
 
       SetItemFields(item, fields);
 
-
       return item;
-
-      //TODO migrate field creation logic
-
-
     }
 
 
