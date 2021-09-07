@@ -1,8 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using AutoSitecore.Builders;
 using NSubstitute;
 using Ploeh.AutoFixture;
 using Sitecore.Data;
-using Sitecore.Data.Items;
 
 namespace AutoSitecore
 {

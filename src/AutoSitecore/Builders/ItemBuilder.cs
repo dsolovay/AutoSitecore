@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace AutoSitecore
+namespace AutoSitecore.Builders
 {
-  public class ItemBuilder : ISpecimenBuilder
+  internal class ItemBuilder : ISpecimenBuilder
   {
     private IFixture _fixture;
 
