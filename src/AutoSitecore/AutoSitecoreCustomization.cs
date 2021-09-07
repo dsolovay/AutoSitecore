@@ -1,5 +1,4 @@
 ﻿using AutoSitecore.Builders;
-using NSubstitute;
 using Ploeh.AutoFixture;
 using Sitecore.Data;
 
@@ -10,9 +9,11 @@ namespace AutoSitecore
     public void Customize(IFixture fixture)
     {
     
-      fixture.Inject(Substitute.For<Database>());
+      fixture.Inject(NSubstitute.Substitute.For<Database>());
 
-      fixture.Customizations.Insert(0, new ItemBuilder(fixture));
+      fixture.Customizations.Insert(0, new ItemDataBuilder());
+
+      fixture.Customizations.Insert(0, new ItemBuilder());
       
     }
   }

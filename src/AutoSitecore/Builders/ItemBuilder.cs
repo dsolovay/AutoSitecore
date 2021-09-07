@@ -15,12 +15,6 @@ namespace AutoSitecore.Builders
 {
   internal class ItemBuilder : ISpecimenBuilder
   {
-    private IFixture _fixture;
-
-    public ItemBuilder(IFixture fixture)
-    {
-      _fixture = fixture;
-    }
 
     public object Create(object request, ISpecimenContext context)
     {
@@ -43,28 +37,16 @@ namespace AutoSitecore.Builders
         return new NoSpecimen();
       }
 
-      ItemDataAttribute itemDataAttribute = paramInfo?.GetCustomAttributes(typeof(ItemDataAttribute))?.FirstOrDefault() as ItemDataAttribute;
+      ItemDataAttribute itemDataAttribute = paramInfo?.GetCustomAttributes(typeof(ItemDataAttribute))?.FirstOrDefault() as ItemDataAttribute ?? ItemDataAttribute.Null;  
 
-
-      if (itemDataAttribute != null)
-      {
-        string itemName = itemDataAttribute?.Name ?? _fixture.Create("itemName");
-        _fixture.Customizations.Insert(0, new ItemNameBuilder(itemName));
-        _fixture.Customizations.Insert(0, new TemplateIdBuilder(itemDataAttribute.TemplateId));
-        _fixture.Customizations.Insert(0, new ItemIdBuilder(itemDataAttribute.ItemId));
-
-      }
 
       List<System.Attribute> fields = paramInfo?.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
+      itemDataAttribute.CustomFields = fields;
 
+      ItemData data = context.Resolve(itemDataAttribute) as ItemData;  
 
-      if (((itemDataAttribute?.HasFields) ?? false) || ((fields?.Count ?? 0) > 0))
-      {
-        _fixture.Customizations.Insert(0, new ItemFieldBuilder(_fixture, itemDataAttribute?.HasFields ?? false, fields ?? new List<System.Attribute>()));
-      }
+      Database db = context.Resolve(typeof(Database)) as Database;
 
-      ItemData data = _fixture.Create<ItemData>();
-      Database db = _fixture.Create<Database>();
 
       var item = Substitute.For<Item>(data.Definition.ID, data, db);
 

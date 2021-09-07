@@ -186,8 +186,8 @@ namespace AutoSitecoreUnitTest
     {
       items.Count().Should().Be(3, "this is AutoFixture standard behavior");
       items.ToList().ForEach(i => i.GetType().Should().BeSubstituteOf<Item>());
-      items.First().ID.Should().NotBe(items.Last().ID);
-      items.First().TemplateID.Should().NotBe(items.Last().TemplateID);
+      items.First().ID.Should().NotBe(items.Last().ID, "IDs should be unique");
+      items.First().TemplateID.Should().NotBe(items.Last().TemplateID, "templateIDs should be unique");
     }
 
     [Theory, AutoSitecore]

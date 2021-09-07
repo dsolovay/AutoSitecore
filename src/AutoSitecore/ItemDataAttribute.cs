@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sitecore;
 using Sitecore.Data;
 using Sitecore.Pipelines.GetContentEditorWarnings;
@@ -14,8 +15,8 @@ namespace AutoSitecore
     {
       Name = name;
 
-      ItemId = itemId != null ? ParseIdWithError(itemId, nameof(itemId)) : ID.Undefined;
-      TemplateId = templateId != null ? ParseIdWithError(templateId, nameof(templateId)) : ID.Undefined;
+      ItemId = itemId != null ? ParseIdWithError(itemId, nameof(itemId)) : null;
+      TemplateId = templateId != null ? ParseIdWithError(templateId, nameof(templateId)) : null;
 
       HasFields = fields;
     }
@@ -34,6 +35,7 @@ namespace AutoSitecore
     public string Name { get; }
     public ID TemplateId { get; }
     public ID ItemId { get; }
+    public List<Attribute> CustomFields { get; internal set; } = new List<Attribute>();
   }
 
 }
