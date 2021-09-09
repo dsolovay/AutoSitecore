@@ -126,13 +126,11 @@ namespace AutoSitecoreUnitTest
       data.Definition.Name.Should().NotBeEmpty();
     }
      
+    // This behavior has changed since 1.0.0.
     [Theory, AutoSitecore]
-    public void NoAutoPropertiesMakesRealItem([NoAutoProperties] Item item)
+    public void NoAutoPropertiesMakesSubstituteItem([NoAutoProperties] Item item)
     {
-      item.GetType().Should().Be<Item>(
-        "this documents unexpected behavior of AutoFixture");
-      item.GetType().Should().NotBeSubstitute();
-
+      item.GetType().Should().BeSubstituteOf<Item>();
     }
 
     [Theory, AutoSitecore]
