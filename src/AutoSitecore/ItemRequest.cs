@@ -14,8 +14,13 @@ namespace AutoSitecore
 
     public object Create(object request, ISpecimenContext context)
     {
+      ItemDataAttribute itemDataAttribute = new ItemDataAttribute(Name, ID.ToString());
+      foreach(var field in Fields)
+      {
+        itemDataAttribute.CustomFields.Add(new FieldDataAttribute(field.Name, field.Value, field.ID?.ToString()));
+      }
       ItemData itemData =
-        context.Resolve(new ItemDataAttribute(Name, ID.ToString())) as ItemData;
+        context.Resolve(itemDataAttribute) as ItemData;
 
       return context.Resolve(itemData);
 

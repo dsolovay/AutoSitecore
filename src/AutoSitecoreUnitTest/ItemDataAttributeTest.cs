@@ -142,7 +142,7 @@ namespace AutoSitecoreUnitTest
 
     [Theory, AutoSitecore]
     public void CanSetFieldIds(
-      [FieldData(name: "a", id:"11b1c214-e002-4616-86f1-a36ec008a3b4", value: "Value 1")]
+      [FieldData(id:"11b1c214-e002-4616-86f1-a36ec008a3b4", value: "Value 1")]
       [FieldData(id:"d1441cbc-1052-488a-ac07-486e0d3c64fb", value: "Value 2")]
     Item item)
     {
@@ -171,11 +171,12 @@ namespace AutoSitecoreUnitTest
       item.ID.Should().Be(itemId);
       item.Name.Should().Be(itemName);
 
-      ////item.Fields[fieldName].Value.Should().Be(fieldValue);
-      //item.Fields[fieldId].Value.Should().Be(fieldValue);
+      item.Fields[fieldId].Value.Should().Be(fieldValue);
+      // TODO item.Fields[fieldName].Value.Should().Be(fieldValue);
+
     }
 
-    // create tree
+    // create tree of items
 
   }
 

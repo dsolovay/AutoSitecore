@@ -40,7 +40,9 @@ namespace AutoSitecore.Builders
       List<System.Attribute> fields = paramInfo?.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
       itemDataAttribute.CustomFields = fields;
 
+
       ItemData data = itemData ?? context.Resolve(itemDataAttribute) as ItemData;
+      //TODO Instead of using ItemData, combine ItemData and the field list in a custom object.
       Database db = context.Create<Database>();
 
       return new ItemFactory(data, db, fields).Make();
