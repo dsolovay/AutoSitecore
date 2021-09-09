@@ -9,8 +9,6 @@ namespace AutoSitecore
   [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
   public class ItemDataAttribute : Attribute
   {
-    public static readonly ItemDataAttribute Null = new ItemDataAttribute();
-
     public ItemDataAttribute(string name = null, string itemId = null, string templateId = null, bool fields = false)
     {
       Name = name;

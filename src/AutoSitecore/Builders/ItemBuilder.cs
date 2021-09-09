@@ -38,16 +38,13 @@ namespace AutoSitecore.Builders
         return new NoSpecimen();
       }
 
-      ItemDataAttribute itemDataAttribute = paramInfo?.GetCustomAttributes(typeof(ItemDataAttribute))?.FirstOrDefault() as ItemDataAttribute ?? ItemDataAttribute.Null;  
-
+      ItemDataAttribute itemDataAttribute = paramInfo?.GetCustomAttributes(typeof(ItemDataAttribute))?.FirstOrDefault() as ItemDataAttribute ?? new ItemDataAttribute();
 
       List<System.Attribute> fields = paramInfo?.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
       itemDataAttribute.CustomFields = fields;
 
-      ItemData data = context.Resolve(itemDataAttribute) as ItemData;  
-
-      Database db = context.Resolve(typeof(Database)) as Database;
-
+      ItemData data = context.Resolve(itemDataAttribute) as ItemData;
+      Database db = context.Create<Database>();
 
       var item = Substitute.For<Item>(data.Definition.ID, data, db);
 
