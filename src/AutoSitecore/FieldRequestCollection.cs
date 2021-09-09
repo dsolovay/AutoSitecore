@@ -1,15 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace AutoSitecoreUnitTest
+namespace AutoSitecore
 {
-  public class FieldRequest
-  {
-    public string Name { get; set; }
-    public Sitecore.Data.ID ID { get; set; }
-    public string Value { get; set; }
-  }
-
   public class FieldRequestCollection: IEnumerable<FieldRequest>
   {
     private List<FieldRequest> internalList = new List<FieldRequest>();

@@ -22,30 +22,45 @@ namespace AutoSitecore.Builders
 
       var typeInfo = request as Type;
       var paramInfo = request as ParameterInfo;
-
-      if ((typeInfo == null && paramInfo == null))
+      var itemData = request as ItemData;
+      
+      if ((typeInfo == null && paramInfo == null && itemData == null))
       {
         return new NoSpecimen();
-      }
-
-      if (typeInfo != null && typeInfo != typeof(Item))
+      } else if (typeInfo != null && typeInfo != typeof(Item))
       {
         return new NoSpecimen();
-      }
-
-      if (paramInfo != null && paramInfo.ParameterType != typeof(Item))
+      } else if (paramInfo != null && paramInfo.ParameterType != typeof(Item))
       {
         return new NoSpecimen();
-      }
+      }      
 
       ItemDataAttribute itemDataAttribute = paramInfo?.GetCustomAttributes(typeof(ItemDataAttribute))?.FirstOrDefault() as ItemDataAttribute ?? new ItemDataAttribute();
 
       List<System.Attribute> fields = paramInfo?.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
       itemDataAttribute.CustomFields = fields;
 
-      ItemData data = context.Resolve(itemDataAttribute) as ItemData;
+      ItemData data = itemData ?? context.Resolve(itemDataAttribute) as ItemData;
       Database db = context.Create<Database>();
 
+      return new ItemFactory(data, db, fields).Make();
+    } }
+
+  internal class ItemFactory
+  {
+    private readonly ItemData data;
+    private readonly Database db;
+    private readonly List<System.Attribute> attributeFields;
+
+    public ItemFactory(ItemData data, Database db, List<System.Attribute> attributeFields)
+    {
+      this.data = data;
+      this.db = db;
+      this.attributeFields = attributeFields;
+    }
+
+    public Item Make()
+    {
       var item = Substitute.For<Item>(data.Definition.ID, data, db);
 
       item.Name.Returns(item.InnerData.Definition.Name);
@@ -58,10 +73,11 @@ namespace AutoSitecore.Builders
       item.Appearance.Returns(Substitute.For<ItemAppearance>(item));
       //TODO Map remaining properties to substitutes.
 
-      SetItemFields(item, fields);
+      SetItemFields(item, attributeFields);
 
       return item;
     }
+ 
 
 
     private void SetItemFields(Item item, List<System.Attribute> attributeFields)

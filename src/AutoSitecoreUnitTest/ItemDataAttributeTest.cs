@@ -159,23 +159,18 @@ namespace AutoSitecoreUnitTest
       id1.Should().NotBe(ID.Null);
     }
 
-    [Theory(Skip = "Not yet implemented"), AutoSitecore]
+    [Theory, AutoSitecore]
     public void CanSetFieldsWithoutUsingAttributes(IFixture fixture, ID itemId, string itemName, ID fieldId, string fieldName, string fieldValue)
     {
-      var customization = new ItemCustomization() {
+      var itemRequest = new ItemRequest() {
         ID = itemId,
         Name = itemName,
         Fields = { {Name = fieldName, ID = fieldId, Value = fieldValue } }
       };
-      fixture.Customize(customization);
+      Item item = fixture.Build<Item>().FromFactory(itemRequest).OmitAutoProperties().Create();
+      item.ID.Should().Be(itemId);
+      item.Name.Should().Be(itemName);
 
-
-      //TODO Implement after refactoring to use Specimen Builder
-
-      //Item item = fixture.Create<Item>();
-
-      //item.Name.Should().Be(itemName);
-      //item.ID.Should().Be(itemId);
       ////item.Fields[fieldName].Value.Should().Be(fieldValue);
       //item.Fields[fieldId].Value.Should().Be(fieldValue);
     }

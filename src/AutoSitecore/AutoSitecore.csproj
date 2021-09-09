@@ -77,7 +77,10 @@
     <Compile Include="Builders\ItemDataBuilder.cs" />
     <Compile Include="FieldDataAttribute.cs" />
     <Compile Include="Builders\ItemBuilder.cs" />
+    <Compile Include="FieldRequest.cs" />
+    <Compile Include="FieldRequestCollection.cs" />
     <Compile Include="ItemDataAttribute.cs" />
+    <Compile Include="ItemRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
