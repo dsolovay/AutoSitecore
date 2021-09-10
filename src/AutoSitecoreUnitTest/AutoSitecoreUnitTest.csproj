@@ -102,6 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asssertions\SitecoreFieldAssertions.cs" />
+    <Compile Include="Extensions\SitecoreFieldExtensions.cs" />
     <Compile Include="AutoSitecoreAttribute.cs" />
     <Compile Include="AutoSitecoreCustomizationTest.cs" />
     <Compile Include="DocumentationTest.cs" />

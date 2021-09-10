@@ -13,6 +13,7 @@ using NSubstitute;
 using Xunit;
 using Xunit.Sdk;
 using Ploeh.AutoFixture.Xunit2;
+using AutoSitecoreUnitTest.Asssertions;
 
 namespace AutoSitecoreUnitTest
 {
@@ -83,9 +84,9 @@ namespace AutoSitecoreUnitTest
       firstId.Should().NotBe(lastId, "IDs should differ");
       innerFields[firstId].Should().NotBe(innerFields[lastId], "values should differ");
 
-      item.Fields[firstId].Should().BeSameAs(item.Fields[0]);
+      item.Fields[firstId].Should().BeSameAs(item.Fields[0], "field[0]");
 
-      item.Fields[lastId].Should().BeSameAs(item.Fields[item.Fields.Count - 1]);
+      ((object)item.Fields[lastId]).Should().BeSameAs(item.Fields[item.Fields.Count - 1], "field[count-1]");
       item.Fields[firstId].Should().NotBeSameAs(item.Fields[lastId]);
     }
 
@@ -171,9 +172,10 @@ namespace AutoSitecoreUnitTest
       item.ID.Should().Be(itemId);
       item.Name.Should().Be(itemName);
 
-      item.Fields[fieldId].Value.Should().Be(fieldValue, "can access by ID");
-      item.Fields[fieldName].Value.Should().Be(fieldValue, "can access by name");
 
+      item.Fields[fieldId].Should().HaveValue(fieldValue, "can access by ID");
+     
+      item.Fields[fieldName].Should().HaveValue(fieldValue, "can access by name");
     }
 
     // create tree of items
