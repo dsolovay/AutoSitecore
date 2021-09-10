@@ -22,9 +22,9 @@ namespace AutoSitecore.Builders
 
       var typeInfo = request as Type;
       var paramInfo = request as ParameterInfo;
-      var itemData = request as ItemData;
+      var itemRequest = request as ItemRequest;
       
-      if ((typeInfo == null && paramInfo == null && itemData == null))
+      if ((typeInfo == null && paramInfo == null && itemRequest == null))
       {
         return new NoSpecimen();
       } else if (typeInfo != null && typeInfo != typeof(Item))
@@ -39,14 +39,33 @@ namespace AutoSitecore.Builders
 
       List<System.Attribute> fields = paramInfo?.GetCustomAttributes(typeof(FieldDataAttribute)).ToList();
       itemDataAttribute.CustomFields = fields;
-
-
-      ItemData data = itemData ?? context.Resolve(itemDataAttribute) as ItemData;
-      //TODO Instead of using ItemData, combine ItemData and the field list in a custom object.
+  
       Database db = context.Create<Database>();
 
+      ItemData data;
+      if (itemRequest != null)
+      {
+        data = itemRequest.ItemData;
+        fields = Convert(itemRequest.Fields);
+      }
+      else
+      {
+        data = context.Resolve(itemDataAttribute) as ItemData;
+      }
+
       return new ItemFactory(data, db, fields).Make();
-    } }
+    }
+
+    private List<System.Attribute> Convert(FieldRequestCollection fields)
+    {
+      var list = new List<System.Attribute>();
+      foreach(var field in fields)
+      {
+        list.Add(new FieldDataAttribute(field.Name, field.Value, field.ID?.ToString()));
+      }
+      return list;
+    }
+  }
 
   internal class ItemFactory
   {

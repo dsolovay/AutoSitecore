@@ -11,6 +11,7 @@ namespace AutoSitecore
     public ID ID { get; set; }
     public string Name { get; set; }
     public FieldRequestCollection Fields { get; internal set; } = new FieldRequestCollection();
+    internal ItemData ItemData { get; private set; }
 
     public object Create(object request, ISpecimenContext context)
     {
@@ -19,10 +20,9 @@ namespace AutoSitecore
       {
         itemDataAttribute.CustomFields.Add(new FieldDataAttribute(field.Name, field.Value, field.ID?.ToString()));
       }
-      ItemData itemData =
-        context.Resolve(itemDataAttribute) as ItemData;
+      ItemData = context.Resolve(itemDataAttribute) as ItemData;
 
-      return context.Resolve(itemData);
+      return context.Resolve(this);
 
     }
   }

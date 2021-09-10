@@ -171,8 +171,8 @@ namespace AutoSitecoreUnitTest
       item.ID.Should().Be(itemId);
       item.Name.Should().Be(itemName);
 
-      item.Fields[fieldId].Value.Should().Be(fieldValue);
-      // TODO item.Fields[fieldName].Value.Should().Be(fieldValue);
+      item.Fields[fieldId].Value.Should().Be(fieldValue, "can access by ID");
+      item.Fields[fieldName].Value.Should().Be(fieldValue, "can access by name");
 
     }
 
