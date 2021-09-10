@@ -84,9 +84,20 @@ namespace AutoSitecoreUnitTest
       firstId.Should().NotBe(lastId, "IDs should differ");
       innerFields[firstId].Should().NotBe(innerFields[lastId], "values should differ");
 
-      item.Fields[firstId].Should().BeSameAs(item.Fields[0], "field[0]");
+      Assert.NotNull(item.Fields[firstId]);
+      Assert.NotNull(item.Fields[0]);
+      Assert.Same(item.Fields[firstId], item.Fields[0]);
 
-      ((object)item.Fields[lastId]).Should().BeSameAs(item.Fields[item.Fields.Count - 1], "field[count-1]");
+      //Assert.NotNull(item.Fields[firstId], "classic assert");
+      //item.Fields[firstId].Should().NotBeNull("firstId");
+      //item.Fields[0].Should().NotBeNull("item[0]");
+      // item.Fields[firstId].Should().BeSameAs(item.Fields[0], "field[0]");
+
+      Assert.Same(item.Fields[lastId], item.Fields[item.Fields.Count - 1]);
+
+      //TODO Figure out why fluent assertions is reporting null.
+
+     //item.Fields[lastId].Should().BeSameAs(item.Fields[item.Fields.Count - 1], "field[count-1]");
       item.Fields[firstId].Should().NotBeSameAs(item.Fields[lastId]);
     }
 
