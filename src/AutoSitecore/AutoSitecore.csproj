@@ -80,6 +80,7 @@
     <Compile Include="FieldRequest.cs" />
     <Compile Include="FieldRequestCollection.cs" />
     <Compile Include="ItemDataAttribute.cs" />
+    <Compile Include="ItemDataRequest.cs" />
     <Compile Include="ItemRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -50,7 +50,7 @@ namespace AutoSitecore.Builders
       }
       else
       {
-        data = context.Resolve(itemDataAttribute) as ItemData;
+        data = context.Resolve(itemDataAttribute.ToItemRequest()) as ItemData;
       }
 
       return new ItemFactory(data, db, fields).Make();

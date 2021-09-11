@@ -10,10 +10,9 @@ namespace AutoSitecore.Builders
 {
   internal class ItemDataBuilder : ISpecimenBuilder
   {
-
     public object Create(object request, ISpecimenContext context)
     {
-      ItemDataAttribute itemDataRequest = request as ItemDataAttribute;
+      ItemDataRequest itemDataRequest = request as ItemDataRequest;
 
       if (itemDataRequest == null)
       {
@@ -36,7 +35,7 @@ namespace AutoSitecore.Builders
         GetFieldList(itemDataRequest, context));
     }
 
-    private FieldList GetFieldList(ItemDataAttribute itemDataRequest, ISpecimenContext context)
+    private FieldList GetFieldList(ItemDataRequest itemDataRequest, ISpecimenContext context)
     {
       var list = new FieldList();
 

@@ -34,6 +34,19 @@ namespace AutoSitecore
     public ID TemplateId { get; }
     public ID ItemId { get; }
     public List<Attribute> CustomFields { get; internal set; } = new List<Attribute>();
+
+    internal ItemDataRequest ToItemRequest()
+    {
+      return new ItemDataRequest
+      {
+        Name = this.Name,
+        ItemId = this.ItemId,
+        TemplateId = this.TemplateId,
+        CustomFields = this.CustomFields,
+        HasFields = this.HasFields
+
+      };
+    }
   }
 
 }
