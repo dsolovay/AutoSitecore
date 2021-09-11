@@ -103,11 +103,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asssertions\SitecoreFieldAssertions.cs" />
-    <Compile Include="Extensions\SitecoreFieldExtensions.cs" />
+    <Compile Include="Asssertions\SitecoreFieldExtensions.cs" />
     <Compile Include="AutoSitecoreAttribute.cs" />
     <Compile Include="AutoSitecoreCustomizationTest.cs" />
     <Compile Include="DocumentationTest.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Asssertions\TypeExtensions.cs" />
     <Compile Include="ItemDataAttributeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
