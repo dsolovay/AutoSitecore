@@ -141,7 +141,6 @@ namespace AutoSitecoreUnitTest
       item.Fields[someFieldName].Value.Should().Be(someValue);
     }
 
-    //TODO This test fails if run in conjuction with others. Isolate side effect.
     [Theory, AutoSitecore]
     public void CanSetFieldValue(
       [FieldData(name: "Field 1", value: "Value 1")]
