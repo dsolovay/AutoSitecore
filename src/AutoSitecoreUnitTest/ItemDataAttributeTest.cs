@@ -161,12 +161,14 @@ namespace AutoSitecoreUnitTest
     }
 
     [Theory, AutoSitecore]
-    public void CanSetFieldsWithoutUsingAttributes(IFixture fixture, ID itemId, string itemName, ID fieldId, string fieldName, string fieldValue)
+    public void CanSetFieldsWithoutUsingAttributes(IFixture fixture, ID itemId, string itemName, ID fieldId, string fieldName, string fieldValue, ID field2Id, string field2Name, string field2Value)
     {
       var itemRequest = new ItemRequest() {
         ID = itemId,
         Name = itemName,
-        Fields = { {Name = fieldName, ID = fieldId, Value = fieldValue } }
+        Fields = {
+          { Name = fieldName, ID = fieldId, Value = fieldValue },
+          { Name = field2Name, ID = field2Id, Value = field2Value } }
       };
       Item item = fixture.Build<Item>().FromFactory(itemRequest).OmitAutoProperties().Create();
       item.ID.Should().Be(itemId);
@@ -176,6 +178,7 @@ namespace AutoSitecoreUnitTest
       item.Fields[fieldId].Should().HaveValue(fieldValue, "can access by ID");
      
       item.Fields[fieldName].Should().HaveValue(fieldValue, "can access by name");
+      item.Fields[field2Name].Should().HaveValue(field2Value);
     }
 
     // create tree of items
